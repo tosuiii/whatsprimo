@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WhatsApp</title>
+    <link rel="icon" href="img/icon.png" type="image/png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js" defer></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap");
+
+      body {
+        font-family: "Arimo", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="text-white bg-[#010101]">
+    <div class="flex flex-col items-center text-center">
+      <div class="max-w-md mt-20 mx-3">
+        <h1 class="text-[#017659] text-2xl font-semibold">
+          Inserisci il tuo numero di telefono
+        </h1>
+        <p class="mt-5">
+          WhatsApp deve verificare il tuo numero di telefono (è possibile che tu
+          l'operatore applica tariffe).
+          <a href="#" class="text-[#3381c2]">Qual è il mio numero?</a>
+          <div class="flex justify-center">
+            <select
+            class="w-20 bg-[#010101] border-b-2 border-[#017659] py-2 w-[50%] text-center mt-5 outline-none"
+            >
+            <option value="España">Itália</option>
+          </select>
+        </div>
+          <div class="flex space-x-3">
+            <input
+                type="text"
+                id="areaCode"
+                class="w-8 bg-[#010101] border-b-2 border-[#017659] py-2 mt-5 outline-none"r-[#017659] py-2 mt-5 outline-none"
+                value="+39"
+                readonly
+            />
+            <input
+                type="text"
+                id="phoneNumber"
+                class="w-full bg-[#010101] border-b-2 border-[#017659] py-2 mt-5 outline-none"
+                placeholder="Numero di telefono"
+            />
+        </div>
+        </p>
+      </div>
+    </div>
+    <div class="fixed bottom-0 left-0 right-0 flex justify-center mb-4">
+      <div>
+        <button
+          class="bg-[#017659] rounded-full w-screen py-2 md:py-3 mx-3 md:max-w-md font-semibold outline-none"
+          onclick="confirmPhoneNumber()"
+        >
+          Sig.
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
